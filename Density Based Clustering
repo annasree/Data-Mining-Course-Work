@@ -154,10 +154,10 @@ plt.show()
 dbscan = DBSCAN(eps=1, min_samples=3) # radius(eps) is taken as 1
 labels = dbscan.fit_predict(df_6)
 print(np.unique(labels))
-n_clusters_ = len(set(labels))
-n_noise_ = list(labels).count(-1)
-print("Estimated number of clusters: %d" % n_clusters_)
-print("Estimated number of noise points: %d" % n_noise_)
+clusters = len(set(labels))
+noise = list(labels).count(-1)
+print("Number of clusters: %d" % clusters)
+print("Number of noise points: %d" % noise)
 
 # ploting the corresponding graph with identified clusters 
 plt.scatter(df_6[labels == -1,0], df_6[labels == -1,1], s=50, c='black', label=-1)
