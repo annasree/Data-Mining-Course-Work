@@ -1,0 +1,38 @@
+# importing necessory modules
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+#import seaborn as sns
+from sklearn.cluster import KMeans
+from sklearn.cluster import DBSCAN
+#from sklearn.datasets import make_blobs
+#from sklearn.preprocessing import StandardScaler
+
+# Reading the data file using pandas
+Abalone = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data", header=None)
+print(Abalone)
+# defining column names
+df_1 = Abalone.set_axis(['Sex', 'Length', 'Diameter', 'Height', 'Whole Weight','Shucked Weight','Viscera Weight','Shell Weight','Rings'], 
+                     axis=1, inplace=False)
+print(df_1)
+# slicing the data
+df_2 = Abalone.iloc[:, 1:9]
+df_3 = df_2.set_axis(['Length', 'Diameter', 'Height', 'Whole Weight','Shucked Weight','Viscera Weight','Shell Weight','Rings'], 
+                     axis=1, inplace=False)
+print(df_3)
+# describing the statistical summary of the given data
+print(df_3.describe())
+# defining x to perform the kmeans clustering
+x = Abalone.iloc[0:200, 1:9].values
+print(x)
+# slicing the data 
+df_4=Abalone.iloc[0:200, [3, 8]]
+print(df_4)
+df_5 = df_4.set_axis(['Height', 'Rings'], axis=1, inplace=False)
+print(df_5)
+df_6=Abalone.iloc[0:200, [3, 8]].values
+print(df_6)
+
+# ploting scater plot of the data
+plt.scatter(df_6[0:200, 0], df_6[0:200, 1], s=10, c='black')
+plt.show()
