@@ -82,3 +82,89 @@ plt.xlabel('Height(mm)')
 plt.ylabel('Number of Rings')
 plt.legend()
 plt.show()
+
+# importing necessory modules
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.cluster import KMeans
+from sklearn.cluster import DBSCAN
+
+# Reading the data file using pandas
+Abalone = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data", header=None)
+print(Abalone)
+# defining column names
+df_1 = Abalone.set_axis(['Sex', 'Length', 'Diameter', 'Height', 'Whole Weight','Shucked Weight','Viscera Weight','Shell Weight','Rings'], 
+                     axis=1, inplace=False)
+print(df_1)
+# slicing the data
+df_2 = Abalone.iloc[:, 1:9]
+df_3 = df_2.set_axis(['Length', 'Diameter', 'Height', 'Whole Weight','Shucked Weight','Viscera Weight','Shell Weight','Rings'], 
+                     axis=1, inplace=False)
+print(df_3)
+# describing the statistical summary of the given data
+print(df_3.describe())
+# defining x to perform the kmeans clustering
+x = Abalone.iloc[:, 1:9].values
+print(x)
+# slicing the data 
+df_4=Abalone.iloc[:, [3, 8]]
+print(df_4)
+df_5 = df_4.set_axis(['Height', 'Rings'], axis=1, inplace=False)
+print(df_5)
+df_6=Abalone.iloc[:, [3, 8]].values
+print(df_6)
+
+# ploting scater plot of the data
+plt.scatter(df_6[:, 0], df_6[:, 1], s=10, c='black')
+plt.show()
+
+# finding the optimum number of clusters
+wcss = [] #within cluster sum of squares
+for i in range(1, 11):
+    kmeans = KMeans(n_clusters = i, init = 'k-means++', max_iter = 300, n_init
+    = 10, random_state = 0)
+    kmeans.fit(df_6)
+    wcss.append(kmeans.inertia_)
+
+plt.plot(range(1, 11), wcss)
+plt.title('The elbow method')
+plt.xlabel('Number of clusters')
+plt.ylabel('WCSS') #within cluster sum of squares
+plt.show()
+
+# performing kmeans clustering for the given data
+kmeans = KMeans(n_clusters = 3, init = 'k-means++', max_iter = 300, n_init =
+                  10, random_state = 0)
+y_kmeans = kmeans.fit_predict(x)
+
+plt.scatter(x[y_kmeans == 0, 0], x[y_kmeans == 0, 1], s = 50, c = 'purple',
+                    label = 'Female')
+
+plt.scatter(x[y_kmeans == 1, 0], x[y_kmeans == 1, 1], s = 50, c = 'orange',
+             label = 'Infant')
+plt.scatter(x[y_kmeans == 2, 0], x[y_kmeans == 2, 1], s = 50, c = 'green',
+                    label = 'Male')
+plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:,1], s =
+                       50, c = 'red', label = 'Centroids')
+plt.legend()
+plt.show()
+
+# performing density-based clustering for the given data using DBSCAN algorithm
+dbscan = DBSCAN(eps=1, min_samples=3) # radius(eps) is taken as 1
+labels = dbscan.fit_predict(df_6)
+print(np.unique(labels))
+n_clusters_ = len(set(labels))
+n_noise_ = list(labels).count(-1)
+print("Estimated number of clusters: %d" % n_clusters_)
+print("Estimated number of noise points: %d" % n_noise_)
+
+# ploting the corresponding graph with identified clusters 
+plt.scatter(df_6[labels == -1,0], df_6[labels == -1,1], s=50, c='black', label=-1)
+plt.scatter(df_6[labels == 0,0], df_6[labels == 0,1], s=50, c='green', label=0)
+plt.scatter(df_6[labels == 1,0], df_6[labels == 1,1], s=50, c='red', label=1)
+plt.scatter(df_6[labels == 2,0], df_6[labels == 2,1], s=50, c='blue', label=2)
+plt.xlabel('Height(mm)')
+plt.ylabel('Number of Rings')
+plt.legend()
+plt.show()
