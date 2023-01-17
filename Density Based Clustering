@@ -116,7 +116,7 @@ df_6=Abalone.iloc[:, [3, 8]].values
 print(df_6)
 
 # ploting scater plot of the data
-plt.scatter(df_6[:, 0], df_6[:, 1], s=10, c='black')
+plt.scatter(df_6[:, 0], df_6[:, 1], s=50, c='blue')
 plt.show()
 
 # finding the optimum number of clusters
